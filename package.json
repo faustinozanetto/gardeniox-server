@@ -5,12 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "tsc -w",
-    "dev": "nodemon dist/index.js",
-    "start": "node dist/index.js",
-    "postinstall": "tsc",
-    "watch-node": "nodemon dist/index.js",
-    "watch-ts": "tsc -w",
-    "deploy": "git add . && git commit -m Heroku && git push heroku main"
+    "start:dev": "PORT=5000 node dist/index.js",
+    "dev": "PORT=5000 nodemon --exec ts-node src/index.ts --watch src"
   },
   "engines": {
     "node": "15.8.0"
