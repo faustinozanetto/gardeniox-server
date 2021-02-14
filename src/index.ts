@@ -84,10 +84,6 @@ const main = async () => {
     cors: false,
   });
 
-  app.get('/test', (_, res) => {
-    res.send('Test!');
-  });
-
   // Server listening
   app.listen({ port: PORT }, () => {
     console.log(`🚀 Server started on port ${PORT}`);
