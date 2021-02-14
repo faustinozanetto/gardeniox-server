@@ -82,8 +82,8 @@ const main = async () => {
     cors: false,
   });
 
-  app.get('/', (_, res) => {
-    res.send('Hello World!');
+  app.get('/test', (_, res) => {
+    res.send('Test!');
   });
 
   // Server listening
