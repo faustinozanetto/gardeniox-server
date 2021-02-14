@@ -82,6 +82,10 @@ const main = async () => {
     cors: false,
   });
 
+  app.get('/', (_, res) => {
+    res.send('Hello World!');
+  });
+
   // Server listening
   app.listen(4000, () => {
     console.log('🚀 Server started on http://localhost:4000');
