@@ -18,6 +18,8 @@ import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
 
 let connection: Connection;
 
+const PORT = process.env.port || 4000;
+
 const main = async () => {
   try {
     // Database connection
@@ -87,8 +89,8 @@ const main = async () => {
   });
 
   // Server listening
-  app.listen({ port: process.env.PORT || 4000 }, () => {
-    console.log(`🚀 Server started on port ${process.env.PORT || 4000}`);
+  app.listen({ port: PORT }, () => {
+    console.log(`🚀 Server started on port ${PORT}`);
   });
 };
 
