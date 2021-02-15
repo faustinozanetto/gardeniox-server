@@ -1,13 +1,21 @@
-import { Arg, Field, InputType, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Field,
+  InputType,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { getConnection } from 'typeorm';
 import { Plant, Plot } from '../entities/index';
 
 @InputType()
 class PlotInput {
-  @Field()
+  @Field(() => Int)
   size: number;
 
-  @Field()
+  @Field(() => Int)
   maxPlants: number;
 }
 
@@ -19,7 +27,7 @@ export class PlotResolver {
   }
 
   @Query(() => Plot)
-  async plot(@Arg('id') id: number): Promise<Plot | undefined> {
+  async plot(@Arg('id', () => Int) id: number): Promise<Plot | undefined> {
     return await Plot.findOne(id);
   }
 
@@ -31,7 +39,7 @@ export class PlotResolver {
   }
 
   @Mutation(() => Boolean)
-  async deletePlot(@Arg('id') id: number): Promise<Boolean> {
+  async deletePlot(@Arg('id', () => Int) id: number): Promise<Boolean> {
     await getConnection()
       .createQueryBuilder()
       .delete()
@@ -42,7 +50,9 @@ export class PlotResolver {
   }
 
   @Mutation(() => Number)
-  async plantsAmount(@Arg('id') id: number): Promise<number | undefined> {
+  async plantsAmount(
+    @Arg('id', () => Int) id: number
+  ): Promise<number | undefined> {
     const plot = await Plot.findOne(id);
     if (!plot) {
       console.error('Plot not found');
@@ -57,7 +67,9 @@ export class PlotResolver {
   }
 
   @Query(() => Plant)
-  async getPlotPlants(@Arg('id') id: number): Promise<Plant | undefined> {
+  async getPlotPlants(
+    @Arg('id', () => Int) id: number
+  ): Promise<Plant | undefined> {
     const plot = await Plot.findOne(id);
     let plantIds;
     if (plot) {

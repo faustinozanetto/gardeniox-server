@@ -63,15 +63,15 @@ export class PlantResolver {
   }
 
   @Mutation(() => Boolean)
-  async deletePlant(@Arg('id') id: number): Promise<Boolean> {
+  async deletePlant(@Arg('id', () => Int) id: number): Promise<Boolean> {
     await Plant.delete(id);
     return true;
   }
 
   @Mutation(() => Disease)
   async addDisease(
-    @Arg('id') id: number,
-    @Arg('diseaseId') diseaseId: number
+    @Arg('id', () => Int) id: number,
+    @Arg('diseaseId', () => Int) diseaseId: number
   ): Promise<Disease | undefined> {
     const disease = await Disease.findOne(diseaseId);
     if (!disease) {
@@ -106,7 +106,7 @@ export class PlantResolver {
 
   @Query(() => Boolean)
   async hasDisease(
-    @Arg('id') id: number,
+    @Arg('id', () => Int) id: number,
     @Arg('name') name: string
   ): Promise<Boolean> {
     const disease = await Disease.findOne({ where: { name } });
