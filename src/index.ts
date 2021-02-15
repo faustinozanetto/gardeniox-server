@@ -29,7 +29,7 @@ const main = async () => {
     // username: 'faust',
     // password: '4532164mine',
     logging: true,
-    synchronize: !__prod__,
+    synchronize: true,
     entities: [Plant, Plot, User, Disease],
   });
 
