@@ -2,7 +2,7 @@
   "name": "gardeniox-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index",
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
