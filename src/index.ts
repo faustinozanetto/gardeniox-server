@@ -20,8 +20,6 @@ import { DATABASE_URL } from './utils/config';
 
 let connection: Connection;
 
-const PORT = process.env.PORT || 4000;
-
 const main = async () => {
   try {
     // Database connection
@@ -94,8 +92,8 @@ const main = async () => {
   });
 
   // Server listening
-  app.listen({ port: PORT }, () => {
-    console.log(`🚀 Server started on port ${PORT}`);
+  app.listen(process.env.PORT || 5000, () => {
+    console.log(`🚀 Server started on port 5000`);
   });
 };
 
