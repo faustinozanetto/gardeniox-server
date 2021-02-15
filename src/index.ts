@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import Redis from 'ioredis';
 import { ApolloServer } from 'apollo-server-express';
-import { Connection, createConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { buildSchema } from 'type-graphql';
 import {
   PlantResolver,
@@ -16,44 +16,31 @@ import { Disease, Plant, Plot, User } from './entities/index';
 // import { getOptions } from './utils/getDatabaseOptions';
 import session from 'express-session';
 import { COOKIE_NAME, __prod__ } from './constants';
-import { APP } from './utils/config';
-
-let connection: Connection;
 
 const main = async () => {
-  try {
-    // Database connection
-    connection = await createConnection({
-      type: 'postgres',
-      database: 'gardeniox',
-      username: 'faust',
-      password: '4532164mine',
-      logging: true,
-      synchronize: true,
-      entities: [Plant, Plot, User, Disease],
-    });
-  } catch (error) {
-    console.error(
-      'An error occurred while trying to initialize connection to database!',
-      error
-    );
-    process.exit();
-  }
-  console.log(
-    'Successfully connected to database:',
-    connection.options.database
-  );
+  // Database connection
+  const connection = await createConnection({
+    type: 'postgres',
+    database: 'gardeniox',
+    username: 'faust',
+    password: '4532164mine',
+    logging: true,
+    synchronize: true,
+    entities: [Plant, Plot, User, Disease],
+  });
+
+  console.log('Successfully connected to database', connection.name);
 
   // Express app
   const app = express();
 
   // Redis setup
   const RedisStore = connectRedis(session);
-  const redis = new Redis();
-
+  const redis = new Redis(process.env.REDIS_URL);
+  app.set('trust proxy', 1);
   app.use(
     cors({
-      origin: APP,
+      origin: process.env.CORS_ORIGIN,
       credentials: true,
     })
   );
@@ -92,9 +79,13 @@ const main = async () => {
     cors: false,
   });
 
+  app.get('/hi', (_req, res) => res.send('Hello'));
+
+  app.get('/', (_req, res) => res.send('Working'));
+
   // Server listening
-  app.listen(process.env.PORT || 4000, () => {
-    console.log(`🚀 Server started on port 4000`);
+  app.listen(parseInt(process.env.PORT) || 4000, () => {
+    console.log('server started on localhost:4000');
   });
 };
 
