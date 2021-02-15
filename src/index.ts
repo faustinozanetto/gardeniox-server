@@ -15,8 +15,8 @@ import connectRedis from 'connect-redis';
 import { Disease, Plant, Plot, User } from './entities/index';
 // import { getOptions } from './utils/getDatabaseOptions';
 import session from 'express-session';
-import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
-import { APP, DATABASE_URL } from './utils/config';
+import { COOKIE_NAME, __prod__ } from './constants';
+import { APP } from './utils/config';
 
 let connection: Connection;
 
