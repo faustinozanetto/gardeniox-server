@@ -21,11 +21,12 @@ const main = async () => {
   // Database connection
   const connection = await createConnection({
     type: 'postgres',
-    database: 'gardeniox',
-    username: 'faust',
-    password: '4532164mine',
+    url: process.env.DATABASE_URL,
+    // database: 'gardeniox',
+    // username: 'faust',
+    // password: '4532164mine',
     logging: true,
-    synchronize: true,
+    synchronize: !__prod__,
     entities: [Plant, Plot, User, Disease],
   });
 
