@@ -17,17 +17,20 @@ import { Disease, Plant, Plot, User } from './entities/index';
 import session from 'express-session';
 import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
 import { DATABASE_URL } from './utils/config';
+
 let connection: Connection;
 
-const PORT = process.env.port || 4000;
+const PORT = process.env.PORT || 4000;
 
 const main = async () => {
   try {
     // Database connection
     connection = await createConnection({
-      url: DATABASE_URL,
       type: 'postgres',
-      extra: { ssl: true, rejectUnauthorized: false },
+      url: DATABASE_URL,
+      extra: {
+        ssl: true,
+      },
       entities: [Plant, Plot, User, Disease],
     });
   } catch (error) {
@@ -94,10 +97,6 @@ const main = async () => {
   app.listen({ port: PORT }, () => {
     console.log(`🚀 Server started on port ${PORT}`);
   });
-};
-
-export const getConnection = () => {
-  return connection;
 };
 
 main().catch((error) => {
