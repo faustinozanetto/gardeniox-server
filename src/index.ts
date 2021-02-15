@@ -16,7 +16,7 @@ import { Disease, Plant, Plot, User } from './entities/index';
 // import { getOptions } from './utils/getDatabaseOptions';
 import session from 'express-session';
 import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
-import { DATABASE_URL } from './utils/config';
+import { APP, DATABASE_URL } from './utils/config';
 
 let connection: Connection;
 
@@ -25,7 +25,10 @@ const main = async () => {
     // Database connection
     connection = await createConnection({
       type: 'postgres',
-      url: DATABASE_URL,
+      // url: DATABASE_URL,
+      database: 'gardeniox',
+      username: 'faust',
+      password: '4532164mine',
       extra: {
         ssl: true,
       },
@@ -52,7 +55,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: APP_URL,
+      origin: APP,
       credentials: true,
     })
   );
@@ -92,7 +95,7 @@ const main = async () => {
   });
 
   // Server listening
-  app.listen(process.env.PORT || 5000, () => {
+  app.listen(process.env.PORT, () => {
     console.log(`🚀 Server started on port 5000`);
   });
 };
