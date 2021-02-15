@@ -6,10 +6,11 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js",
+    "build": "tsc",
     "start": "node dist/index.js",
     "start2": "ts-node src/index.ts",
     "dev2": "nodemon --exec ts-node src/index.ts",
-    "postinstall": "yarn watch && yarn dev"
+    "postinstall": "yarn tsc && yarn dev"
   },
   "keywords": [],
   "author": "",

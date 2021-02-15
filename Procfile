@@ -1,1 +1,1 @@
-web: yarn postinstall
+web: node dist/index.js
