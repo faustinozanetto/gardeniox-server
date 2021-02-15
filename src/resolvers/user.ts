@@ -118,7 +118,7 @@ export class UserResolver {
   @Mutation(() => Boolean)
   logout(@Ctx() { req, res }: GardenioxContext) {
     return new Promise((resolve) =>
-      req.session.destroy((error) => {
+      req.session.destroy((error: any) => {
         res.clearCookie(COOKIE_NAME);
         if (error) {
           resolve(false);
