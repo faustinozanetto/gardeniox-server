@@ -11,11 +11,12 @@ import {
   PlotResolver,
   UserResolver,
 } from './resolvers';
-import { getDatabaseOptions } from './utils';
 import connectRedis from 'connect-redis';
+import { Disease, Plant, Plot, User } from './entities/index';
+// import { getOptions } from './utils/getDatabaseOptions';
 import session from 'express-session';
 import { APP_URL, COOKIE_NAME, __prod__ } from './constants';
-
+import { DATABASE_URL } from './utils/config';
 let connection: Connection;
 
 const PORT = process.env.port || 4000;
@@ -23,7 +24,12 @@ const PORT = process.env.port || 4000;
 const main = async () => {
   try {
     // Database connection
-    connection = await createConnection(getDatabaseOptions());
+    connection = await createConnection({
+      url: DATABASE_URL,
+      type: 'postgres',
+      extra: { ssl: true, rejectUnauthorized: false },
+      entities: [Plant, Plot, User, Disease],
+    });
   } catch (error) {
     console.error(
       'An error occurred while trying to initialize connection to database!',
