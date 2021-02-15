@@ -22,7 +22,9 @@ const main = async () => {
   const connection = await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    // ssl: true, // database: 'gardeniox',
+
+    // ssl: true, //
+    // database: 'gardeniox',
     ssl: {
       rejectUnauthorized: false,
     },
@@ -43,18 +45,10 @@ const main = async () => {
   const redis = new Redis(process.env.REDIS_URL);
   app.set('trust proxy', 1);
 
-  app.use(function (_, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    next();
-  });
-
   app.use(
     cors({
       origin: process.env.CORS_ORIGIN,
+      // origin: 'https://gardeniox-client.vercel.app/',
       credentials: true,
     })
   );
