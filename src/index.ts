@@ -75,6 +75,8 @@ const main = async () => {
       resolvers: [UserResolver, PlantResolver, PlotResolver, DiseaseResolver],
       validate: false,
     }),
+    introspection: true,
+    playground: true,
     context: ({ req, res }) => ({ req, res, redis }),
   });
 
