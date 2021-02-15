@@ -25,13 +25,11 @@ const main = async () => {
     // Database connection
     connection = await createConnection({
       type: 'postgres',
-      // url: DATABASE_URL,
       database: 'gardeniox',
       username: 'faust',
       password: '4532164mine',
-      extra: {
-        ssl: true,
-      },
+      logging: true,
+      synchronize: true,
       entities: [Plant, Plot, User, Disease],
     });
   } catch (error) {
@@ -95,8 +93,8 @@ const main = async () => {
   });
 
   // Server listening
-  app.listen(process.env.PORT, () => {
-    console.log(`🚀 Server started on port 5000`);
+  app.listen(process.env.PORT || 4000, () => {
+    console.log(`🚀 Server started on port 4000`);
   });
 };
 
