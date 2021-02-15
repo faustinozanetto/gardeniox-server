@@ -22,7 +22,10 @@ const main = async () => {
   const connection = await createConnection({
     type: 'postgres',
     url: process.env.DATABASE_URL,
-    ssl: true, // database: 'gardeniox',
+    // ssl: true, // database: 'gardeniox',
+    ssl: {
+      rejectUnauthorized: false,
+    },
     // username: 'faust',
     // password: '4532164mine',
     logging: true,
