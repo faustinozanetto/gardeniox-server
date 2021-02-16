@@ -6,6 +6,7 @@ import {
   InputType,
   Field,
   Int,
+  ObjectType,
 } from 'type-graphql';
 import { Plant, PlantType } from '../entities/plant.entity';
 import { Disease, Plot } from '../entities';
@@ -38,11 +39,45 @@ class PlantInput {
   plantedOn!: string;
 }
 
+@ObjectType()
+class PaginatedPlants {
+  @Field(() => [Plant])
+  plants: Plant[];
+
+  @Field(() => Boolean)
+  hasMore: boolean;
+}
+
 @Resolver()
 export class PlantResolver {
-  @Query(() => [Plant])
-  async plants(): Promise<Plant[]> {
-    return Plant.find();
+  @Query(() => PaginatedPlants)
+  async plants(
+    @Arg('limit', () => Int) limit: number,
+    @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+  ): Promise<PaginatedPlants> {
+    const realLimit = Math.min(50, limit);
+    const realLimitPlusOne = realLimit + 1;
+
+    const replacements: any[] = [realLimitPlusOne];
+
+    if (cursor) {
+      replacements.push(new Date(parseInt(cursor)));
+    }
+
+    const plants = await getConnection().query(
+      `
+    select p.*
+    from plants p
+    ${cursor ? `where p."createdAt" < $2` : ''}
+    order by p."createdAt" DESC
+    limit $1
+    `,
+      replacements
+    );
+    return {
+      plants: plants.slice(0, realLimit),
+      hasMore: plants.length === realLimitPlusOne,
+    };
   }
 
   @Query(() => Plant)

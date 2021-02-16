@@ -12,28 +12,13 @@ import {
   UserResolver,
 } from './resolvers';
 import connectRedis from 'connect-redis';
-import { Disease, Plant, Plot, User } from './entities/index';
-// import { getOptions } from './utils/getDatabaseOptions';
+import { getOptions } from './utils';
 import session from 'express-session';
 import { COOKIE_NAME, __prod__ } from './constants';
 
 const main = async () => {
   // Database connection
-  const connection = await createConnection({
-    type: 'postgres',
-    url: process.env.DATABASE_URL,
-
-    // ssl: true, //
-    // database: 'gardeniox',
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    // username: 'faust',
-    // password: '4532164mine',
-    logging: true,
-    synchronize: true,
-    entities: [Plant, Plot, User, Disease],
-  });
+  const connection = await createConnection(await getOptions());
 
   console.log('Successfully connected to database', connection.name);
 
@@ -47,7 +32,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN,
+      origin: __prod__ ? process.env.CORS_ORIGIN : 'http://localhost:3000',
       // origin: 'https://gardeniox-client.vercel.app/',
       credentials: true,
     })
